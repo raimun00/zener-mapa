@@ -19,52 +19,37 @@
 :root{--azul:#1F3864;--azul2:#2d5096;--accent:#f0a500;--fondo:#f2f4f8;--panel:#fff;--borde:#dde3ed;--texto:#1a2340;--sub:#5a6a8a}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"IBM Plex Sans",sans-serif;background:var(--fondo);color:var(--texto);height:100vh;display:flex;flex-direction:column;overflow:hidden}
-header{background:var(--azul);color:white;height:50px;padding:0 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:1000}
+
+header{background:var(--azul);color:white;height:50px;padding:0 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;z-index:1001}
 .logo{font-size:17px;font-weight:600}.logo em{color:var(--accent);font-style:normal}
-#badge{background:var(--accent);color:var(--azul);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700;display:none}
+#badge{background:var(--accent);color:var(--azul);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700}
 #hinfo{font-size:11px;color:rgba(255,255,255,.55);margin-left:auto;font-family:"IBM Plex Mono",monospace}
 #btn-refresh{background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.3);padding:5px 11px;border-radius:4px;cursor:pointer;font-size:12px}
-#btn-refresh:hover{background:rgba(255,255,255,.22)}
+
 .main{display:flex;flex:1;overflow:hidden;position:relative}
-#panel{width:270px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--borde);display:flex;flex-direction:column;overflow:hidden;z-index:800}
-.ph{background:var(--azul);color:white;padding:11px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+
+/* Panel Lateral */
+#panel{width:270px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--borde);display:flex;flex-direction:column;z-index:1000}
+.ph{background:var(--azul);color:white;padding:11px 14px;font-size:11px;font-weight:700;text-transform:uppercase}
 .filtros{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px}
-.fg label{display:block;font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
-.fg select,.fg input{width:100%;padding:6px 9px;border:1px solid var(--borde);border-radius:4px;font-size:12px;font-family:"IBM Plex Sans",sans-serif;background:var(--fondo);color:var(--texto)}
-.fg select:focus,.fg input:focus{outline:none;border-color:var(--azul2)}
-#btn-reset{margin:0 10px 10px;border:1px solid var(--borde);background:none;color:var(--sub);padding:6px;border-radius:4px;cursor:pointer;font-size:11px}
-#btn-reset:hover{border-color:var(--azul);color:var(--azul)}
-.stats{border-top:1px solid var(--borde);padding:10px;max-height:220px;overflow-y:auto}
-.stats-title{font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
-.sf{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid var(--fondo)}
-.sf:last-child{border-bottom:none}
-.sn{font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--azul);background:var(--fondo);padding:0 6px;border-radius:8px;font-size:11px}
+.fg label{display:block;font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;margin-bottom:4px}
+.fg select, .fg input{width:100%;padding:6px;border:1px solid var(--borde);border-radius:4px;font-size:12px}
+#btn-reset{margin:10px;padding:8px;font-size:11px;cursor:pointer}
+.stats{border-top:1px solid var(--borde);padding:10px;max-height:200px;overflow-y:auto}
+.sf{display:flex;justify-content:space-between;font-size:11px;padding:2px 0}
+.sn{font-weight:700;background:#eee;padding:0 5px;border-radius:4px}
 
-/* Ajustes críticos para el mapa */
-#map-container{flex:1;position:relative;background:#e5e5e5}
-#mapa{width:100%;height:100%;z-index:1}
+/* Contenedor del Mapa - CRÍTICO */
+#map-wrapper{flex:1;position:relative;background:#ddd;display:flex}
+#mapa{width:100%;height:100%;min-height:100%} /* Forzamos el alto */
 
-#ov{position:absolute;inset:0;background:rgba(242,244,248,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;gap:14px;text-align:center;padding:30px}
-#ov.hide{display:none}
-.ov-icon{font-size:46px}.ov-title{font-size:20px;font-weight:700;color:var(--azul)}
-.ov-sub{font-size:13px;color:var(--sub);max-width:400px;line-height:1.65}
-.spin{width:34px;height:34px;border:3px solid var(--borde);border-top-color:var(--azul);border-radius:50%;animation:sp .75s linear infinite}
+#ov{position:absolute;inset:0;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000}
+.spin{width:30px;height:30px;border:3px solid #ccc;border-top-color:var(--azul);border-radius:50%;animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.pw{min-width:230px}
-.pc{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--sub);margin-bottom:3px}
-.pn{font-size:14px;font-weight:700;color:var(--azul);margin-bottom:6px;line-height:1.3}
-.pb{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:7px}
-.pl{font-size:11px;margin-bottom:3px}.pl b{color:var(--sub);font-weight:500}
-.pm{display:block;margin-top:9px;text-align:center;background:var(--azul);color:white;padding:5px 10px;border-radius:4px;text-decoration:none;font-size:11px;font-weight:700}
-.pm:hover{background:var(--azul2)}
-.leaflet-popup-content-wrapper{border-radius:7px}
 
-/* Colores de estados */
-.e-PI{background:#fff3cd;color:#856404}.e-EO{background:#d1e7dd;color:#0a5c36}
-.e-FI{background:#cfe2ff;color:#0a3678}.e-FA{background:#a3cfbb;color:#0a3c22}
-.e-RE{background:#f8d7da;color:#842029}.e-AN{background:#e2e3e5;color:#41464b}
-.e-PF{background:#ffe5b4;color:#7c4a00}.e-EP{background:#e2d9f3;color:#432874}
-.e-XX{background:#e2e3e5;color:#41464b}
+/* Estilos Popup */
+.pw{min-width:200px}.pn{font-weight:700;color:var(--azul);margin-bottom:5px}
+.pb{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;background:#eee}
 </style>
 </head>
 <body>
@@ -72,139 +57,87 @@ header{background:var(--azul);color:white;height:50px;padding:0 18px;display:fle
 <header>
   <div class="logo">&#9889; Zener <em>Obras</em></div>
   <span id="badge">0 obras</span>
-  <span id="hinfo">Iniciando...</span>
-  <button id="btn-refresh" onclick="cargarDatos()">&#8635; Actualizar</button>
+  <span id="hinfo">Cargando...</span>
+  <button id="btn-refresh" onclick="cargarDatos()">Actualizar</button>
 </header>
 
 <div class="main">
   <div id="panel">
-    <div class="ph">&#128269; Filtros</div>
+    <div class="ph">Filtros</div>
     <div class="filtros">
-      <div class="fg"><label>Buscar nombre / codigo</label><input type="text" id="f-q" placeholder="Escribe aqui..." oninput="filtrar()"></div>
+      <div class="fg"><label>Buscar</label><input type="text" id="f-q" oninput="filtrar()"></div>
       <div class="fg"><label>Estado</label><select id="f-est" onchange="filtrar()"><option value="">Todos</option></select></div>
       <div class="fg"><label>Provincia</label><select id="f-prov" onchange="filtrar()"><option value="">Todas</option></select></div>
       <div class="fg"><label>Proyecto</label><select id="f-proy" onchange="filtrar()"><option value="">Todos</option></select></div>
-      <div class="fg"><label>Tipo obra</label><select id="f-tipo" onchange="filtrar()"><option value="">Todos</option></select></div>
-      <div class="fg"><label>Gestor</label><select id="f-gest" onchange="filtrar()"><option value="">Todos</option></select></div>
     </div>
-    <button id="btn-reset" onclick="reset()">&#10005; Limpiar filtros</button>
+    <button id="btn-reset" onclick="reset()">Limpiar Filtros</button>
     <div class="stats">
-      <div class="stats-title">Obras visibles por estado</div>
       <div id="stats"></div>
     </div>
   </div>
 
-  <div id="map-container">
-    <div id="ov">
-      <div class="spin"></div>
-      <div class="ov-title">Cargando obras...</div>
-      <div class="ov-sub">Obteniendo datos desde el archivo central.</div>
-    </div>
+  <div id="map-wrapper">
+    <div id="ov"><div class="spin"></div><p>Cargando Mapa...</p></div>
     <div id="mapa"></div>
   </div>
 </div>
 
 <script>
-const COL={
-  "PENDIENTE INICIO":"#f0a500",
-  "EJECUCION DE OBRA":"#198754",
-  "FINALIZADA":"#0d6efd",
-  "FACTURADA":"#20c997",
-  "REPAROS":"#dc3545",
-  "ANULADA":"#6c757d",
-  "ANULADA CON GASTOS":"#d63384",
-  "PENDIENTE FACTURA":"#fd7e14",
-  "ELABORACION PEDIDO":"#6f42c1",
-  "VALIDACION PRL":"#0dcaf0",
-  "APROBACION OBRA":"#0dcaf0",
-  "VALIDACION T-E":"#adb5bd",
-  "DEFINICION T-E":"#adb5bd",
-  "CREACION OBRA":"#adb5bd"
-};
-
-const CSS_EST={
-  "PENDIENTE INICIO":"e-PI",
-  "EJECUCION DE OBRA":"e-EO",
-  "FINALIZADA":"e-FI",
-  "FACTURADA":"e-FA",
-  "REPAROS":"e-RE",
-  "ANULADA":"e-AN",
-  "ANULADA CON GASTOS":"e-AN",
-  "PENDIENTE FACTURA":"e-PF",
-  "ELABORACION PEDIDO":"e-EP"
-};
-
 let obras=[], mapa=null, capa=null;
 
-function icono(est){
-  const c = COL[(est||"").toUpperCase()] || "#607d8b";
-  const s = `<svg xmlns="http://www.w3.org/2000/svg" width="26" height="34" viewBox="0 0 26 34"><path d="M13 0C5.82 0 0 5.82 0 13c0 8.67 13 21 13 21S26 21.67 26 13C26 5.82 20.18 0 13 0z" fill="${c}" stroke="white" stroke-width="1.8"/><circle cx="13" cy="13" r="4.5" fill="white"/></svg>`;
-  return L.divIcon({html:s, className:"", iconSize:[26,34], iconAnchor:[13,34], popupAnchor:[0,-34]});
-}
+// Colores para los marcadores
+const COLORES = {"EJECUCION DE OBRA":"#198754", "FINALIZADA":"#0d6efd", "PENDIENTE INICIO":"#f0a500"};
 
 function initMapa(){
   if(mapa) return;
-  mapa = L.map("mapa", {
-    zoomControl: true,
-    fadeAnimation: true
-  }).setView([40.4, -3.7], 6);
-
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{
-    attribution: "&copy; OpenStreetMap &copy; CARTO",
-    maxZoom: 19
+  
+  // Inicializamos el mapa centrado en España
+  mapa = L.map('mapa', {zoomControl: true}).setView([40.41, -3.70], 6);
+  
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
   }).addTo(mapa);
   
   capa = L.layerGroup().addTo(mapa);
   
-  // Forzar recalcular tamaño tras inicialización
-  setTimeout(() => { mapa.invalidateSize(); }, 400);
+  // El truco para que Leaflet despierte si el contenedor estaba oculto
+  setTimeout(() => { 
+    mapa.invalidateSize(); 
+    console.log("Mapa redimensionado");
+  }, 500);
 }
 
 async function cargarDatos(){
-  document.getElementById("hinfo").textContent = "Actualizando...";
   try {
     const r = await fetch(JSON_URL + "?t=" + Date.now());
-    if(!r.ok) throw new Error("No se pudo cargar obras.json (" + r.status + ")");
+    const data = await r.json();
     
-    let data = await r.json();
-    // Si el JSON viene como string dentro de un objeto, lo parseamos
-    obras = Array.isArray(data) ? data : (typeof data === 'string' ? JSON.parse(data) : data.obras || []);
+    // Si el Excel Script devuelve un string, lo parseamos. Si es array, directo.
+    obras = Array.isArray(data) ? data : (data.obras ? data.obras : JSON.parse(data));
     
-    if(!mapa) initMapa();
-    
+    initMapa();
     poblarSelects();
     filtrar();
     
-    document.getElementById("badge").style.display = "inline-block";
-    document.getElementById("hinfo").textContent = "Actualizado: " + new Date().toLocaleTimeString("es-ES");
-    document.getElementById("ov").classList.add("hide");
-    
-    // InvalidateSize una vez más tras quitar el overlay de carga
-    setTimeout(() => { mapa.invalidateSize(); }, 200);
-
+    document.getElementById("ov").style.display = "none";
+    document.getElementById("hinfo").textContent = "Última act: " + new Date().toLocaleTimeString();
   } catch(e) {
-    console.error(e);
-    document.getElementById("ov").classList.remove("hide");
-    document.getElementById("ov").innerHTML = `
-      <div class="ov-icon">⚠️</div>
-      <div class="ov-title">Error de Conexión</div>
-      <div class="ov-sub">${e.message}<br><br>Asegúrate de que el archivo JSON en GitHub es público.</div>
-      <button onclick="cargarDatos()" style="background:var(--azul);color:white;border:none;padding:10px 24px;border-radius:6px;cursor:pointer;margin-top:8px">Reintentar</button>`;
-    document.getElementById("hinfo").textContent = "Error";
+    console.error("Error cargando datos:", e);
+    document.getElementById("hinfo").textContent = "Error al cargar";
   }
 }
 
 function poblarSelects(){
-  [["f-est","estado"],["f-prov","provincia"],["f-proy","proyecto"],["f-tipo","tipo"],["f-gest","gestor"]].forEach(([id,k])=>{
-    const s = document.getElementById(id), prev = s.value;
-    const vals = [...new Set(obras.map(o => o[k]).filter(Boolean))].sort();
+  ["f-est", "f-prov", "f-proy"].forEach(id => {
+    const key = id.replace('f-', '');
+    const s = document.getElementById(id);
+    const valores = [...new Set(obras.map(o => o[key === 'est' ? 'estado' : key]).filter(Boolean))].sort();
     s.innerHTML = "<option value=''>Todos</option>";
-    vals.forEach(v => {
-      const o = document.createElement("option");
-      o.value = o.textContent = v;
-      s.appendChild(o);
+    valores.forEach(v => {
+      const opt = document.createElement("option");
+      opt.value = opt.textContent = v;
+      s.appendChild(opt);
     });
-    if(prev) s.value = prev;
   });
 }
 
@@ -212,72 +145,54 @@ function filtrar(){
   const q = document.getElementById("f-q").value.toLowerCase();
   const est = document.getElementById("f-est").value;
   const prov = document.getElementById("f-prov").value;
-  const proy = document.getElementById("f-proy").value;
-  const tipo = document.getElementById("f-tipo").value;
-  const gest = document.getElementById("f-gest").value;
-
-  const vis = obras.filter(o => 
-    (!q || (o.nombre||"").toLowerCase().includes(q) || (o.codigo||"").toLowerCase().includes(q)) &&
-    (!est || o.estado === est) && 
-    (!prov || o.provincia === prov) &&
-    (!proy || o.proyecto === proy) && 
-    (!tipo || o.tipo === tipo) && 
-    (!gest || o.gestor === gest)
-  );
-
-  if(!capa) return;
-  capa.clearLayers();
-
-  vis.forEach(o => {
-    if(!o.lat || !o.lng) return;
-    
-    const cs = CSS_EST[(o.estado||"").toUpperCase()] || "e-XX";
-    const popup = `<div class="pw">
-      <div class="pc">${o.codigo || 'S/C'}${o.empla ? " &middot; " + o.empla : ""}</div>
-      <div class="pn">${o.nombre || 'Sin nombre'}</div>
-      <span class="pb ${cs}">${o.estado || 'DESCONOCIDO'}</span>
-      <div class="pl"><b>Provincia:</b> ${o.provincia || '-'}</div>
-      <div class="pl"><b>Proyecto:</b> ${o.proyecto || '-'}</div>
-      <div class="pl"><b>Tipo:</b> ${o.tipo || '-'}</div>
-      <div class="pl"><b>Gestor:</b> ${o.gestor || '-'}</div>
-      ${o.desc ? `<div class="pl" style="margin-top:5px;font-style:italic;color:var(--sub)">${o.desc}</div>` : ""}
-      ${o.link ? `<a class="pm" href="${o.link}" target="_blank">📍 Ver en Google Maps</a>` : ""}
-    </div>`;
-    
-    L.marker([o.lat, o.lng], {icon: icono(o.estado)}).bindPopup(popup, {maxWidth: 320}).addTo(capa);
+  
+  const filtradas = obras.filter(o => {
+    const cumpleQ = !q || (o.nombre||"").toLowerCase().includes(q) || (o.codigo||"").toLowerCase().includes(q);
+    const cumpleEst = !est || o.estado === est;
+    const cumpleProv = !prov || o.provincia === prov;
+    return cumpleQ && cumpleEst && cumpleProv;
   });
 
-  document.getElementById("badge").textContent = vis.length + " obras";
+  capa.clearLayers();
   
-  // Ajustar vista solo si hay obras visibles y coordenadas válidas
-  if(vis.length > 0 && mapa) {
-    const bounds = L.latLngBounds(vis.filter(o => o.lat && o.lng).map(o => [o.lat, o.lng]));
-    if(bounds.isValid()) {
-        mapa.fitBounds(bounds, {padding: [40, 40], maxZoom: 14});
-    }
-  }
+  filtradas.forEach(o => {
+    if(!o.lat || !o.lng) return;
+    
+    const color = COLORES[o.estado] || "#666";
+    const marker = L.circleMarker([o.lat, o.lng], {
+      radius: 8,
+      fillColor: color,
+      color: "#fff",
+      weight: 2,
+      fillOpacity: 0.9
+    });
+    
+    marker.bindPopup(`<div class="pw"><div class="pn">${o.nombre}</div><div class="pb">${o.estado}</div></div>`);
+    marker.addTo(capa);
+  });
 
-  // Actualizar estadísticas del panel
-  const cnt = {};
-  vis.forEach(o => { cnt[o.estado] = (cnt[o.estado] || 0) + 1; });
-  document.getElementById("stats").innerHTML = Object.entries(cnt)
-    .sort((a,b) => b[1] - a[1])
-    .map(([e,n]) => `<div class="sf"><span>${e}</span><span class="sn">${n}</span></div>`)
-    .join("") || `<div style="color:var(--sub);font-size:11px">Sin resultados</div>`;
+  document.getElementById("badge").textContent = filtradas.length + " obras";
+  
+  // Estadísticas rápidas
+  const counts = {};
+  filtradas.forEach(o => counts[o.estado] = (counts[o.estado] || 0) + 1);
+  document.getElementById("stats").innerHTML = Object.entries(counts)
+    .map(([k,v]) => `<div class="sf"><span>${k}</span><span class="sn">${v}</span></div>`).join("");
+    
+  if(filtradas.length > 0) {
+    const group = new L.featureGroup(capa.getLayers());
+    mapa.fitBounds(group.getBounds().pad(0.1));
+  }
 }
 
 function reset(){
-  ["f-q","f-est","f-prov","f-proy","f-tipo","f-gest"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("f-q").value = "";
+  document.getElementById("f-est").value = "";
+  document.getElementById("f-prov").value = "";
   filtrar();
 }
 
-// Iniciar al cargar
-window.addEventListener("load", () => {
-  initMapa();
-  cargarDatos();
-  if(AUTO_REFRESH_MIN > 0) setInterval(cargarDatos, AUTO_REFRESH_MIN * 60000);
-});
+window.onload = cargarDatos;
 </script>
-
 </body>
 </html>
