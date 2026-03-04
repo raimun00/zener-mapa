@@ -38,21 +38,13 @@ header{background:var(--azul);color:white;height:50px;padding:0 18px;display:fle
 .hide{display:none !important}
 .spin{width:34px;height:34px;border:3px solid var(--borde);border-top-color:var(--azul);border-radius:50%;animation:sp .75s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* Estilos mejorados del Popup */
-.pw{min-width:240px}
-.pc{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--sub);margin-bottom:3px}
+.pw{min-width:240px}.pc{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--sub);margin-bottom:3px}
 .pn{font-size:14px;font-weight:700;color:var(--azul);margin-bottom:6px;line-height:1.3}
 .pb{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:7px}
 .pl{font-size:11px;margin-bottom:3px}.pl b{color:var(--sub);font-weight:500}
 .p-desc{margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:11px;font-style:italic;color:var(--sub);line-height:1.4}
 .pm{display:block;margin-top:10px;text-align:center;background:var(--azul);color:white;padding:6px 10px;border-radius:4px;text-decoration:none;font-size:11px;font-weight:700}
-
-/* Colores de etiquetas según estado */
-.e-EO{background:#d1e7dd;color:#0a5c36}
-.e-PI{background:#fff3cd;color:#856404}
-.e-FI{background:#cfe2ff;color:#0a3678}
-.e-XX{background:#e2e3e5;color:#41464b}
+.e-EO{background:#d1e7dd;color:#0a5c36}.e-PI{background:#fff3cd;color:#856404}.e-FI{background:#cfe2ff;color:#0a3678}.e-XX{background:#e2e3e5;color:#41464b}
 </style>
 </head>
 <body>
@@ -85,32 +77,15 @@ header{background:var(--azul);color:white;height:50px;padding:0 18px;display:fle
 </div>
 
 <script>
-// Configuración de colores para los puntos
-const COL={
-  "EJECUCION DE OBRA":"#198754",
-  "FINALIZADA":"#0d6efd",
-  "PENDIENTE INICIO":"#f0a500",
-  "REPAROS":"#dc3545",
-  "VALIDACION T-E":"#adb5bd",
-  "DEFINICION T-E":"#adb5bd"
-};
-
-// Clases CSS para las etiquetas del popup
-const CSS_EST={
-  "EJECUCION DE OBRA":"e-EO",
-  "PENDIENTE INICIO":"e-PI",
-  "FINALIZADA":"e-FI"
-};
+const COL={"EJECUCION DE OBRA":"#198754","FINALIZADA":"#0d6efd","PENDIENTE INICIO":"#f0a500","REPAROS":"#dc3545","VALIDACION T-E":"#adb5bd","DEFINICION T-E":"#adb5bd"};
+const CSS_EST={"EJECUCION DE OBRA":"e-EO","PENDIENTE INICIO":"e-PI","FINALIZADA":"e-FI"};
 
 let obras=[], mapa=null, capa=null;
 
 function initMapa(){
   if(mapa) return;
   mapa = L.map("mapa").setView([40.4,-3.7], 6);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{
-    attribution: "&copy; CARTO",
-    maxZoom: 19
-  }).addTo(mapa);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution: "&copy; CARTO",maxZoom: 19}).addTo(mapa);
   capa = L.layerGroup().addTo(mapa);
   setTimeout(() => { mapa.invalidateSize(); }, 500);
 }
@@ -119,17 +94,13 @@ async function cargarDatos(){
   try {
     const r = await fetch(JSON_URL + "?t=" + Date.now());
     const data = await r.json();
-    // Procesamos los datos asegurando que sea un array
     obras = Array.isArray(data) ? data : (typeof data === 'string' ? JSON.parse(data) : data.obras || []);
-    
     initMapa();
     poblarSelects();
     filtrar();
     document.getElementById("ov").classList.add("hide");
     document.getElementById("hinfo").textContent = "Actualizado: " + new Date().toLocaleTimeString();
-  } catch(e) { 
-    console.error("Error al cargar JSON:", e); 
-  }
+  } catch(e) { console.error("Error:", e); }
 }
 
 function poblarSelects(){
@@ -150,23 +121,23 @@ function filtrar(){
   const fTipo=document.getElementById("f-tipo").value;
   const fGest=document.getElementById("f-gest").value;
 
-  const vis = obras.filter(o => 
-    (!q || (o.nombre||"").toLowerCase().includes(q) || (o.codigo||"").toLowerCase().includes(q)) &&
-    (!fEst || o.estado === fEst) &&
-    (!fProv || o.provincia === fProv) &&
-    (!fProy || o.proyecto === fProy) &&
-    (!fTipo || o.tipo === fTipo) &&
-    (!fGest || o.gestor === fGest)
-  );
+  const vis = obras.filter(o => {
+    // FILTRO CRÍTICO: Si la columna M (finalizado) es "SI", la obra no se muestra
+    if (o.finalizado && o.finalizado.toUpperCase() === "SI") return false;
+
+    return (!q || (o.nombre||"").toLowerCase().includes(q) || (o.codigo||"").toLowerCase().includes(q)) &&
+           (!fEst || o.estado === fEst) &&
+           (!fProv || o.provincia === fProv) &&
+           (!fProy || o.proyecto === fProy) &&
+           (!fTipo || o.tipo === fTipo) &&
+           (!fGest || o.gestor === fGest);
+  });
 
   capa.clearLayers();
   vis.forEach(o => {
     if(!o.lat || !o.lng) return;
-    
     const color = COL[o.estado] || "#607d8b";
     const etiquetaClase = CSS_EST[o.estado] || "e-XX";
-    
-    // Construcción del Popup con el campo 'desc' (Descripción)
     const popup = `<div class="pw">
       <div class="pc">${o.codigo || 'S/C'}${o.empla ? " &middot; " + o.empla : ""}</div>
       <div class="pn">${o.nombre}</div>
@@ -175,19 +146,10 @@ function filtrar(){
       <div class="pl"><b>Proyecto:</b> ${o.proyecto}</div>
       <div class="pl"><b>Gestor:</b> ${o.gestor || '-'}</div>
       <div class="pl"><b>Tipo:</b> ${o.tipo || '-'}</div>
-      
       ${o.desc ? `<div class="p-desc">${o.desc}</div>` : ""}
-      
       ${o.link ? `<a class="pm" href="${o.link}" target="_blank">&#128205; Ver en Google Maps</a>` : ""}
     </div>`;
-    
-    L.circleMarker([o.lat, o.lng], {
-      radius: 7, 
-      color: '#fff', 
-      weight: 2, 
-      fillColor: color, 
-      fillOpacity: 0.9
-    }).bindPopup(popup, {maxWidth: 300}).addTo(capa);
+    L.circleMarker([o.lat, o.lng], {radius: 7, color: '#fff', weight: 2, fillColor: color, fillOpacity: 0.9}).bindPopup(popup, {maxWidth: 300}).addTo(capa);
   });
 
   document.getElementById("badge").textContent = vis.length + " obras";
@@ -195,21 +157,15 @@ function filtrar(){
     const bounds = L.latLngBounds(vis.map(o => [o.lat, o.lng]));
     mapa.fitBounds(bounds, {padding:[50,50], maxZoom:14});
   }
-
-  // Actualizar estadísticas laterales
   const cnt={};
   vis.forEach(o=>{cnt[o.estado]=(cnt[o.estado]||0)+1});
-  document.getElementById("stats").innerHTML=Object.entries(cnt)
-    .sort((a,b)=>b[1]-a[1])
-    .map(([e,n])=>`<div class="sf"><span>${e}</span><span class="sn">${n}</span></div>`)
-    .join("") || `<div style="color:var(--sub);font-size:11px">Sin resultados</div>`;
+  document.getElementById("stats").innerHTML=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).map(([e,n])=>`<div class="sf"><span>${e}</span><span class="sn">${n}</span></div>`).join("");
 }
 
 function reset(){
   ["f-q","f-est","f-prov","f-proy","f-tipo","f-gest"].forEach(id => document.getElementById(id).value="");
   filtrar();
 }
-
 window.onload = cargarDatos;
 </script>
 </body>
