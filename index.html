@@ -6,7 +6,6 @@
 <title>Zener - Mapa de Obras</title>
 
 <script>
-  // URL del archivo JSON en tu GitHub
   const JSON_URL = "https://raw.githubusercontent.com/raimun00/zener-mapa/main/obras.json";
   const AUTO_REFRESH_MIN = 5;
 </script>
@@ -19,37 +18,34 @@
 :root{--azul:#1F3864;--azul2:#2d5096;--accent:#f0a500;--fondo:#f2f4f8;--panel:#fff;--borde:#dde3ed;--texto:#1a2340;--sub:#5a6a8a}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"IBM Plex Sans",sans-serif;background:var(--fondo);color:var(--texto);height:100vh;display:flex;flex-direction:column;overflow:hidden}
-
-header{background:var(--azul);color:white;height:50px;padding:0 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;z-index:1001}
+header{background:var(--azul);color:white;height:50px;padding:0 18px;display:flex;align-items:center;gap:14px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.25);z-index:1000}
 .logo{font-size:17px;font-weight:600}.logo em{color:var(--accent);font-style:normal}
 #badge{background:var(--accent);color:var(--azul);border-radius:20px;padding:2px 10px;font-size:11px;font-weight:700}
 #hinfo{font-size:11px;color:rgba(255,255,255,.55);margin-left:auto;font-family:"IBM Plex Mono",monospace}
 #btn-refresh{background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.3);padding:5px 11px;border-radius:4px;cursor:pointer;font-size:12px}
-
 .main{display:flex;flex:1;overflow:hidden;position:relative}
-
-/* Panel Lateral */
-#panel{width:270px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--borde);display:flex;flex-direction:column;z-index:1000}
+#panel{width:270px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--borde);display:flex;flex-direction:column;overflow:hidden;z-index:800}
 .ph{background:var(--azul);color:white;padding:11px 14px;font-size:11px;font-weight:700;text-transform:uppercase}
 .filtros{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px}
 .fg label{display:block;font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;margin-bottom:4px}
-.fg select, .fg input{width:100%;padding:6px;border:1px solid var(--borde);border-radius:4px;font-size:12px}
-#btn-reset{margin:10px;padding:8px;font-size:11px;cursor:pointer}
-.stats{border-top:1px solid var(--borde);padding:10px;max-height:200px;overflow-y:auto}
-.sf{display:flex;justify-content:space-between;font-size:11px;padding:2px 0}
-.sn{font-weight:700;background:#eee;padding:0 5px;border-radius:4px}
-
-/* Contenedor del Mapa - CRÍTICO */
-#map-wrapper{flex:1;position:relative;background:#ddd;display:flex}
-#mapa{width:100%;height:100%;min-height:100%} /* Forzamos el alto */
-
-#ov{position:absolute;inset:0;background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2000}
-.spin{width:30px;height:30px;border:3px solid #ccc;border-top-color:var(--azul);border-radius:50%;animation:sp .8s linear infinite}
+.fg select,.fg input{width:100%;padding:6px 9px;border:1px solid var(--borde);border-radius:4px;font-size:12px}
+#btn-reset{margin:0 10px 10px;border:1px solid var(--borde);background:none;color:var(--sub);padding:6px;border-radius:4px;cursor:pointer;font-size:11px}
+.stats{border-top:1px solid var(--borde);padding:10px;max-height:220px;overflow-y:auto}
+.sf{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid var(--fondo)}
+.sn{font-family:"IBM Plex Mono",monospace;font-weight:700;color:var(--azul);background:var(--fondo);padding:0 6px;border-radius:8px}
+#mapa{flex:1;height:100%}
+#ov{position:absolute;inset:0;background:rgba(242,244,248,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1001}
+.hide{display:none !important}
+.spin{width:34px;height:34px;border:3px solid var(--borde);border-top-color:var(--azul);border-radius:50%;animation:sp .75s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* Estilos Popup */
-.pw{min-width:200px}.pn{font-weight:700;color:var(--azul);margin-bottom:5px}
-.pb{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:700;background:#eee}
+/* Estilos del Popup Info */
+.pw{min-width:230px}.pc{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--sub);margin-bottom:3px}
+.pn{font-size:14px;font-weight:700;color:var(--azul);margin-bottom:6px;line-height:1.3}
+.pb{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:7px;background:#eee}
+.pl{font-size:11px;margin-bottom:3px}.pl b{color:var(--sub);font-weight:500}
+.pm{display:block;margin-top:9px;text-align:center;background:var(--azul);color:white;padding:5px 10px;border-radius:4px;text-decoration:none;font-size:11px;font-weight:700}
+/* Colores estados */
+.e-EO{background:#d1e7dd;color:#0a5c36}.e-PI{background:#fff3cd;color:#856404}.e-FI{background:#cfe2ff;color:#0a3678}
 </style>
 </head>
 <body>
@@ -63,132 +59,104 @@ header{background:var(--azul);color:white;height:50px;padding:0 18px;display:fle
 
 <div class="main">
   <div id="panel">
-    <div class="ph">Filtros</div>
+    <div class="ph">&#128269; Filtros</div>
     <div class="filtros">
-      <div class="fg"><label>Buscar</label><input type="text" id="f-q" oninput="filtrar()"></div>
+      <div class="fg"><label>Buscar nombre / codigo</label><input type="text" id="f-q" oninput="filtrar()"></div>
       <div class="fg"><label>Estado</label><select id="f-est" onchange="filtrar()"><option value="">Todos</option></select></div>
       <div class="fg"><label>Provincia</label><select id="f-prov" onchange="filtrar()"><option value="">Todas</option></select></div>
       <div class="fg"><label>Proyecto</label><select id="f-proy" onchange="filtrar()"><option value="">Todos</option></select></div>
+      <div class="fg"><label>Tipo obra</label><select id="f-tipo" onchange="filtrar()"><option value="">Todos</option></select></div>
+      <div class="fg"><label>Gestor</label><select id="f-gest" onchange="filtrar()"><option value="">Todos</option></select></div>
     </div>
-    <button id="btn-reset" onclick="reset()">Limpiar Filtros</button>
-    <div class="stats">
-      <div id="stats"></div>
-    </div>
+    <button id="btn-reset" onclick="reset()">Limpiar filtros</button>
+    <div class="stats"><div id="stats"></div></div>
   </div>
-
-  <div id="map-wrapper">
-    <div id="ov"><div class="spin"></div><p>Cargando Mapa...</p></div>
+  <div style="flex:1; position:relative;">
+    <div id="ov"><div class="spin"></div><p>Cargando datos...</p></div>
     <div id="mapa"></div>
   </div>
 </div>
 
 <script>
+const COL={"EJECUCION DE OBRA":"#198754","FINALIZADA":"#0d6efd","PENDIENTE INICIO":"#f0a500","REPAROS":"#dc3545"};
 let obras=[], mapa=null, capa=null;
-
-// Colores para los marcadores
-const COLORES = {"EJECUCION DE OBRA":"#198754", "FINALIZADA":"#0d6efd", "PENDIENTE INICIO":"#f0a500"};
 
 function initMapa(){
   if(mapa) return;
-  
-  // Inicializamos el mapa centrado en España
-  mapa = L.map('mapa', {zoomControl: true}).setView([40.41, -3.70], 6);
-  
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-  }).addTo(mapa);
-  
+  mapa = L.map("mapa").setView([40.4,-3.7], 6);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{maxZoom:19}).addTo(mapa);
   capa = L.layerGroup().addTo(mapa);
-  
-  // El truco para que Leaflet despierte si el contenedor estaba oculto
-  setTimeout(() => { 
-    mapa.invalidateSize(); 
-    console.log("Mapa redimensionado");
-  }, 500);
+  setTimeout(() => { mapa.invalidateSize(); }, 500);
 }
 
 async function cargarDatos(){
   try {
     const r = await fetch(JSON_URL + "?t=" + Date.now());
     const data = await r.json();
-    
-    // Si el Excel Script devuelve un string, lo parseamos. Si es array, directo.
-    obras = Array.isArray(data) ? data : (data.obras ? data.obras : JSON.parse(data));
-    
+    obras = Array.isArray(data) ? data : JSON.parse(data);
     initMapa();
     poblarSelects();
     filtrar();
-    
-    document.getElementById("ov").style.display = "none";
-    document.getElementById("hinfo").textContent = "Última act: " + new Date().toLocaleTimeString();
-  } catch(e) {
-    console.error("Error cargando datos:", e);
-    document.getElementById("hinfo").textContent = "Error al cargar";
-  }
+    document.getElementById("ov").classList.add("hide");
+    document.getElementById("hinfo").textContent = "Actualizado: " + new Date().toLocaleTimeString();
+  } catch(e) { console.error(e); }
 }
 
 function poblarSelects(){
-  ["f-est", "f-prov", "f-proy"].forEach(id => {
-    const key = id.replace('f-', '');
-    const s = document.getElementById(id);
-    const valores = [...new Set(obras.map(o => o[key === 'est' ? 'estado' : key]).filter(Boolean))].sort();
-    s.innerHTML = "<option value=''>Todos</option>";
-    valores.forEach(v => {
-      const opt = document.createElement("option");
-      opt.value = opt.textContent = v;
-      s.appendChild(opt);
-    });
+  [["f-est","estado"],["f-prov","provincia"],["f-proy","proyecto"],["f-tipo","tipo"],["f-gest","gestor"]].forEach(([id,k])=>{
+    const s=document.getElementById(id);
+    const vals=[...new Set(obras.map(o=>o[k]).filter(Boolean))].sort();
+    s.innerHTML="<option value=''>Todos</option>";
+    vals.forEach(v=>{ const o=document.createElement("option"); o.value=o.textContent=v; s.appendChild(o); });
   });
 }
 
 function filtrar(){
-  const q = document.getElementById("f-q").value.toLowerCase();
-  const est = document.getElementById("f-est").value;
-  const prov = document.getElementById("f-prov").value;
-  
-  const filtradas = obras.filter(o => {
-    const cumpleQ = !q || (o.nombre||"").toLowerCase().includes(q) || (o.codigo||"").toLowerCase().includes(q);
-    const cumpleEst = !est || o.estado === est;
-    const cumpleProv = !prov || o.provincia === prov;
-    return cumpleQ && cumpleEst && cumpleProv;
-  });
+  const q=document.getElementById("f-q").value.toLowerCase();
+  const filters = {
+    estado: document.getElementById("f-est").value,
+    provincia: document.getElementById("f-prov").value,
+    proyecto: document.getElementById("f-proy").value,
+    tipo: document.getElementById("f-tipo").value,
+    gestor: document.getElementById("f-gest").value
+  };
+
+  const vis = obras.filter(o => 
+    (!q || (o.nombre||"").toLowerCase().includes(q) || (o.codigo||"").toLowerCase().includes(q)) &&
+    (!filters.estado || o.estado === filters.estado) &&
+    (!filters.provincia || o.provincia === filters.provincia) &&
+    (!filters.proyecto || o.proyecto === filters.proyecto) &&
+    (!filters.tipo || o.tipo === filters.tipo) &&
+    (!filters.gestor || o.gestor === filters.gestor)
+  );
 
   capa.clearLayers();
-  
-  filtradas.forEach(o => {
+  vis.forEach(o => {
     if(!o.lat || !o.lng) return;
+    const color = COL[o.estado] || "#607d8b";
+    const popup = `<div class="pw">
+      <div class="pc">${o.codigo || 'S/C'}${o.empla ? " &middot; " + o.empla : ""}</div>
+      <div class="pn">${o.nombre}</div>
+      <div class="pb">${o.estado}</div>
+      <div class="pl"><b>Provincia:</b> ${o.provincia}</div>
+      <div class="pl"><b>Gestor:</b> ${o.gestor || '-'}</div>
+      <div class="pl"><b>Tipo:</b> ${o.tipo || '-'}</div>
+      ${o.link ? `<a class="pm" href="${o.link}" target="_blank">Ver en Google Maps</a>` : ""}
+    </div>`;
     
-    const color = COLORES[o.estado] || "#666";
-    const marker = L.circleMarker([o.lat, o.lng], {
-      radius: 8,
-      fillColor: color,
-      color: "#fff",
-      weight: 2,
-      fillOpacity: 0.9
-    });
-    
-    marker.bindPopup(`<div class="pw"><div class="pn">${o.nombre}</div><div class="pb">${o.estado}</div></div>`);
-    marker.addTo(capa);
+    L.circleMarker([o.lat, o.lng], {radius:7, color:'#fff', weight:2, fillColor:color, fillOpacity:0.9})
+     .bindPopup(popup).addTo(capa);
   });
 
-  document.getElementById("badge").textContent = filtradas.length + " obras";
-  
-  // Estadísticas rápidas
-  const counts = {};
-  filtradas.forEach(o => counts[o.estado] = (counts[o.estado] || 0) + 1);
-  document.getElementById("stats").innerHTML = Object.entries(counts)
-    .map(([k,v]) => `<div class="sf"><span>${k}</span><span class="sn">${v}</span></div>`).join("");
-    
-  if(filtradas.length > 0) {
-    const group = new L.featureGroup(capa.getLayers());
-    mapa.fitBounds(group.getBounds().pad(0.1));
+  document.getElementById("badge").textContent = vis.length + " obras";
+  if(vis.length) {
+    const bounds = L.latLngBounds(vis.map(o => [o.lat, o.lng]));
+    mapa.fitBounds(bounds, {padding:[50,50], maxZoom:14});
   }
 }
 
 function reset(){
-  document.getElementById("f-q").value = "";
-  document.getElementById("f-est").value = "";
-  document.getElementById("f-prov").value = "";
+  ["f-q","f-est","f-prov","f-proy","f-tipo","f-gest"].forEach(id => document.getElementById(id).value="");
   filtrar();
 }
 
